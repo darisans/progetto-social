@@ -55,16 +55,15 @@ def user(username : str):
     conn = mysql.connector.connect(**config) # host = config#host
     cursor  = conn.cursor(dictionary=True)
     cursor.execute(f"SELECT * from users WHERE username = '{username}' ")
-    conn.close()
-    #fetchone restituisce la prima riga che ha trovato
-    #   noi sappiamo che la riga sarà prima ma anche unica
     user = cursor.fetchone()
+    conn.close()
     if user :
         return user
     else : 
         return {
             "msg" : "utente not found"
         }
+    
         
 # La parte due : 
 #voglio creare la rotta di creazione post e di stampa tutti i post
