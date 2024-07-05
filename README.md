@@ -1,1 +1,2 @@
-# progetto-social
+Register.html è stata pensata come prima pagina ma usando i dati degli utenti già registrati si può anche partire da login.html.
+La barra di ricerca serve per far apparire a schermo solo i post di un certo utente.
