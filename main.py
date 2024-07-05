@@ -37,22 +37,10 @@ def registrazione(user : user_register):
     return {
         "msg" : "utente inserito con successo"
     }
-    
-#la rotta di stampa di tutti gli utenti
-@app.get("/api/allusers")
-def all_users():
-    conn = mysql.connector.connect(**config) # host = config#host
-    cursor  = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * from users")
-    #fetchall restituisce una lista degli oggetti utenti trovati
-    users = cursor.fetchall()
-    conn.close()
-    return users
-    
-#la rotta che stampa i dati di un dato username specifico
+ 
 @app.get("/api/user/{username}")
 def user(username : str):
-    conn = mysql.connector.connect(**config) # host = config#host
+    conn = mysql.connector.connect(**config) 
     cursor  = conn.cursor(dictionary=True)
     cursor.execute(f"SELECT * from users WHERE username = '{username}' ")
     user = cursor.fetchone()
@@ -64,33 +52,35 @@ def user(username : str):
             "msg" : "utente not found"
         }
     
-        
-# La parte due : 
-#voglio creare la rotta di creazione post e di stampa tutti i post
 class post(BaseModel):
-    descrizione: str
-    image_url: str
+    contenuto: str
     
-#rotta di creazione post tramite metodo post
 @app.post("/api/create_post/{username}")
 def create_post(username:str, post: post):
-    conn = mysql.connector.connect(**config) # host = config#host
+    conn = mysql.connector.connect(**config)
     cursor  = conn.cursor(dictionary=True)
-    cursor.execute("INSERT INTO posts(username, descrizione, image_url) VALUES (%s,%s,%s)", 
-                   (username, post.descrizione, post.image_url))
+    cursor.execute("INSERT INTO posts(username, contenuto) VALUES (%s,%s)", 
+                   (username, post.contenuto))
     conn.commit()
     conn.close()
     return {
         "msg" : "tutto andato a buon fine"
     }
     
-#creiamo la rotta di stampa post
 @app.get("/api/home")
 def all_post():
-    conn = mysql.connector.connect(**config) # host = config#host
+    conn = mysql.connector.connect(**config) 
     cursor  = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM posts")
     posts = cursor.fetchall()
-    #fetchall restituisce una lista degli oggetti post trovati
     conn.close()
+    return posts
+
+@app.get("/api/posts/{username}")
+def cerca_post(username:str):
+    conn= mysql.connector.connect(**config)
+    cursor=conn.cursor(dictionary=True)
+    cursor.execute(f"SELECT username,contenuto FROM posts WHERE username = '{username}' ")
+    posts = cursor.fetchall()
+    conn.close
     return posts

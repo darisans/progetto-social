@@ -28,7 +28,6 @@
       </div>
   </div>
     </div>
-    <div id="risposta"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>        
         async function registrazione() {
@@ -49,11 +48,12 @@
                     password: password
                 })
             })
-            /* qua la richiesta fatta la trasformo in json visualizzabile*/
             const risposta = await request.json()
-            document.getElementById("risposta").innerHTML = risposta.msg
+            if (risposta.msg=="utente inserito con successo"){
+                localStorage.setItem('username', username)
+                window.location.href = 'home.html'
+            }
         }
-        console.log("funziona java")
     </script>
 </body>
 </html>
